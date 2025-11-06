@@ -1,19 +1,20 @@
 using System;
 using UnityEngine;
 
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : MonoBehaviour, IHealth
 {
     public enum EnemyState
     {
         Idle,
         Chase,
-        Shoot
+        Shoot,
+        Dead
     }
 
     [Header("Settings")]
     public EnemyState currentState = EnemyState.Idle;
-    public float chaseRange = 5f;       // Start chasing when player is within this range
-    public float shootRange = 2.5f;     // Start shooting when player is within this range
+    public float chaseRange = 5f;
+    public float shootRange = 2.5f;
     public float moveSpeed = 2f;
 
     [Header("Shooting")]
@@ -21,22 +22,32 @@ public class EnemyAI : MonoBehaviour
     public Transform firePoint;
     public float shootCooldown = 1f;
 
+    [Header("Health")]
+    [SerializeField] private float maxHealth = 50f;
+    private float currentHealth;
+    private bool isDead = false;
+
     private Transform player;
     private float shootTimer;
+
+    // IHealth properties
+    public float CurrentHealth => currentHealth;
+    public float MaxHealth => maxHealth;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        currentHealth = maxHealth;
         shootTimer = shootCooldown;
     }
 
     void Update()
     {
-        if (player == null) return;
+        if (isDead || player == null) return;
 
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
-        // Update state based on distance
+        // Update state
         if (distanceToPlayer <= shootRange)
             currentState = EnemyState.Shoot;
         else if (distanceToPlayer <= chaseRange)
@@ -44,7 +55,7 @@ public class EnemyAI : MonoBehaviour
         else
             currentState = EnemyState.Idle;
 
-        // Perform behavior based on state
+        // Execute state behavior
         switch (currentState)
         {
             case EnemyState.Idle:
@@ -61,22 +72,19 @@ public class EnemyAI : MonoBehaviour
 
     void Idle()
     {
-        
+        // do nothing
     }
 
     void ChasePlayer()
     {
         FacePlayer();
-
-        // Move toward player
         Vector2 direction = (player.position - transform.position).normalized;
         transform.position += (Vector3)direction * moveSpeed * Time.deltaTime;
     }
 
     void ShootPlayer()
     {
-        FacePlayer(); // keep facing player while shooting
-
+        FacePlayer();
         shootTimer -= Time.deltaTime;
 
         if (shootTimer <= 0f)
@@ -85,8 +93,7 @@ public class EnemyAI : MonoBehaviour
             {
                 Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             }
-
-            shootTimer = shootCooldown; // reset cooldown
+            shootTimer = shootCooldown;
         }
     }
 
@@ -95,5 +102,33 @@ public class EnemyAI : MonoBehaviour
         Vector2 direction = (player.position - transform.position).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    public void TakeDamage(float amount)
+    {
+        if (isDead) return;
+
+        currentHealth -= amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        Debug.Log($"Enemy took {amount} damage. Health now: {currentHealth}");
+
+        if (currentHealth <= 0)
+            Die();
+    }
+
+    public void Die()
+    {
+        if (isDead) return;
+
+        isDead = true;
+        currentState = EnemyState.Dead;
+        Debug.Log("Enemy has died!");
+        Destroy(gameObject, 1f);
+    }
+
+    public bool IsDead()
+    {
+        return isDead;
     }
 }
