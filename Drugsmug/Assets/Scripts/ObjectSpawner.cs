@@ -36,7 +36,7 @@ public class ObjectSpawner : MonoBehaviour
                 GameObject randomObjectPrefab = GetRandomObjectPrefab();
                 if (randomObjectPrefab != null)
                 {
-                    Instantiate(randomObjectPrefab, randomScreenSpawnPosition, Quaternion.identity);
+                    Instantiate(randomObjectPrefab, randomScreenSpawnPosition, randomObjectPrefab.transform.rotation);
                 }
 
             }
