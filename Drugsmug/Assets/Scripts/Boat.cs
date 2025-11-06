@@ -3,6 +3,13 @@ using UnityEngine;
 
 public class Boat : MonoBehaviour
 {
+    [Header("Prefabs")]
+    [SerializeField] GameObject bulletPrefab;
+
+    [Header("Keybinds")]
+    [SerializeField] KeyCode shootingKeybind = KeyCode.Space;
+
+    [Header("Boat Settings")]
     [SerializeField] float moveSpeed = 10.0f;
     [SerializeField] float rotationSpeed = 150.0f;
 
@@ -21,6 +28,12 @@ public class Boat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        HandleBoatMovement();
+        HandleShooting();
+    }
+    
+    void HandleBoatMovement()
+    {
         float horizontalInput = Input.GetAxisRaw("Horizontal"); // Rotation input
         float verticalInput = Input.GetAxisRaw("Vertical"); // Moving input
 
@@ -35,7 +48,7 @@ public class Boat : MonoBehaviour
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, minVelocity);
 
             }
-            else if(rb.linearVelocity.y > maxVelocity)
+            else if (rb.linearVelocity.y > maxVelocity)
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, maxVelocity);
             }
@@ -62,8 +75,19 @@ public class Boat : MonoBehaviour
             float rotationAmount = rotationSpeed * Time.deltaTime;
 
             Vector3 rotationVector = new Vector3(0.0f, 0.0f, horizontalInput) * rotationAmount;
-            
+
             transform.Rotate(-rotationVector);
+        }
+    }
+
+    void HandleShooting()
+    {
+        if (Input.GetKeyDown(shootingKeybind))
+        {
+            if (bulletPrefab != null)
+            {
+                Instantiate(bulletPrefab, transform.position, transform.rotation);
+            }
         }
     }
 

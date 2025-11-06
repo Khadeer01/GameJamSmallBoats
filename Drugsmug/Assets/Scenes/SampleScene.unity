@@ -372,6 +372,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83bea86152dd97c4f9a7c54539193a5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 4992389029385569457, guid: dd60512339226244790b55779d80dd44, type: 3}
+  shootingKeybind: 32
   moveSpeed: 10
   rotationSpeed: 150
   minVelocity: -5
