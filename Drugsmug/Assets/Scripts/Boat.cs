@@ -9,6 +9,9 @@ public class Boat : MonoBehaviour
     [Header("Keybinds")]
     [SerializeField] KeyCode shootingKeybind = KeyCode.Space;
 
+    [Header("Transforms")]
+    [SerializeField] Transform shootingLocation;
+
     [Header("Boat Settings")]
     [SerializeField] float moveSpeed = 10.0f;
     [SerializeField] float rotationSpeed = 150.0f;
@@ -86,7 +89,14 @@ public class Boat : MonoBehaviour
         {
             if (bulletPrefab != null)
             {
-                Instantiate(bulletPrefab, transform.position, transform.rotation);
+                if (shootingLocation != null)
+                {
+                    Instantiate(bulletPrefab, shootingLocation.position, transform.rotation);
+                }
+                else
+                {
+                    Instantiate(bulletPrefab, transform.position, transform.rotation);
+                }
             }
         }
     }

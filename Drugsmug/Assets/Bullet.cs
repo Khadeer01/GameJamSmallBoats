@@ -17,15 +17,11 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(Vector2.right * speed * Time.deltaTime);
+        transform.Translate(Vector2.up * speed * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Don't hit the shooter or friendly units
-        if (other.CompareTag(shooterTag))
-            return;
-
         // Apply damage if target has IHealth
         IHealth health = other.GetComponent<IHealth>();
         if (health != null)
