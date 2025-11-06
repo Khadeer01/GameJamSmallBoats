@@ -1,9 +1,9 @@
 using UnityEngine;
 
 
-public class Player : MonoBehaviour
+public class Boat : MonoBehaviour
 {
-    [SerializeField] float moveSpeed = 15.0f;
+    [SerializeField] float moveSpeed = 10.0f;
     [SerializeField] float rotationSpeed = 150.0f;
 
     [SerializeField] float minVelocity = -5.0f;
@@ -21,10 +21,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-        float verticalInput = Input.GetAxisRaw("Vertical");
+        float horizontalInput = Input.GetAxisRaw("Horizontal"); // Rotation input
+        float verticalInput = Input.GetAxisRaw("Vertical"); // Moving input
 
-
+        // Move the boat with forward acceeleration
         if (verticalInput != 0.0f)
         {
             Vector2 movingVector = transform.up * verticalInput * moveSpeed * Time.deltaTime;
@@ -47,39 +47,13 @@ public class Player : MonoBehaviour
         // Add deceleration to the boat when the player is not moving it
         else
         {
-            rb.linearVelocity = Vector2.zero;
-            //DecelerateVector(rb.linearVelocity);
-            //if (rb.linearVelocity.x != 0.0f || rb.linearVelocity.y != 0.0f)
-            //{
-            //rb.linearVelocity -= new Vector2(rb.linearVelocity.x - deceleration, rb.linearVelocity.y) * Time.deltaTime;
+            rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, Vector2.zero, deceleration * Time.deltaTime);
 
-            //if (rb.linearVelocity.x > 0.0f)
-            //{
-            //    rb.linearVelocity -= new Vector2(deceleration, 0.0f);
-            //}
-            //else if (rb.linearVelocity.x < 0.0f)
-            //{
-            //    rb.linearVelocity += new Vector2(deceleration, 0.0f);
-            //}
-
-            //if (rb.linearVelocity.y > 0.0f)
-            //{
-            //    rb.linearVelocity -= new Vector2(0.0f, deceleration);
-            //}
-            //else if (rb.linearVelocity.y < 0.0f)
-            //{
-            //    rb.linearVelocity += new Vector2(0.0f, deceleration);
-            //}
-            //rb.linearVelocity -= deceleration;
-            //if (rb.linearVelocity.y > 0.0f)
-            //{
-            //    rb.linearVelocity -= new Vector2(0.0f, deceleration) * Time.deltaTime;
-
-            //}
-            //else
-            //{
-            //    rb.linearVelocity = Vector2.zero;
-            //}
+            // Snap to zero when close enough
+            if (rb.linearVelocity.magnitude < 0.05f)
+            {
+                rb.linearVelocity = Vector2.zero;
+            }
         }
 
         // Rotate the boat
