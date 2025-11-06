@@ -1,7 +1,6 @@
-using JetBrains.Annotations;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : MonoBehaviour, IHealth
 {
     // Values for maxHealth, currentHealth, and checks if the player is dead
     [SerializeField] private float maxHealth = 100f;
