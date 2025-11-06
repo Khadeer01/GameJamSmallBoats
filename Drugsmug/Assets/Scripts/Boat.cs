@@ -1,7 +1,8 @@
 using UnityEngine;
+using static EnemyAI;
 
 
-public class Boat : MonoBehaviour
+public class Boat : MonoBehaviour, IHealth
 {
     [Header("Prefabs")]
     [SerializeField] GameObject bulletPrefab;
@@ -21,10 +22,18 @@ public class Boat : MonoBehaviour
 
     [SerializeField] float deceleration = 5.0f;
 
+    [Header("Health")]
+    [SerializeField] private float maxHealth = 100f;
+    private float currentHealth;
+    private bool isDead = false;
+    public float CurrentHealth => currentHealth;
+    public float MaxHealth => maxHealth;
+
     Rigidbody2D rb;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -91,14 +100,41 @@ public class Boat : MonoBehaviour
             {
                 if (shootingLocation != null)
                 {
-                    Instantiate(bulletPrefab, shootingLocation.position, transform.rotation);
-                }
-                else
-                {
-                    Instantiate(bulletPrefab, transform.position, transform.rotation);
+                    GameObject bulletInstance = Instantiate(bulletPrefab, shootingLocation.position, transform.rotation);
+                    Bullet bulletScript = bulletInstance.GetComponent<Bullet>();
+
+                    if (bulletScript)
+                    {
+                        bulletScript.AssignOwnerGameObject(gameObject);
+                    }
                 }
             }
         }
+    }
+
+    public void TakeDamage(float amount)
+    {
+        if (isDead) return;
+
+        currentHealth -= amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+
+        if (currentHealth <= 0)
+            Die();
+    }
+
+    public void Die()
+    {
+        if (isDead) return;
+
+        isDead = true;
+        Destroy(gameObject);
+    }
+
+    public bool IsDead()
+    {
+        return isDead;
     }
 
 }

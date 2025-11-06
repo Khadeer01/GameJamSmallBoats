@@ -111,6 +111,7 @@ MonoBehaviour:
   minVelocity: -5
   maxVelocity: 5
   deceleration: 5
+  maxHealth: 100
 --- !u!50 &6136253535120553192
 Rigidbody2D:
   serializedVersion: 5

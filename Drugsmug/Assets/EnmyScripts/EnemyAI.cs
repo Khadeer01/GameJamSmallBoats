@@ -91,7 +91,13 @@ public class EnemyAI : MonoBehaviour, IHealth
         {
             if (bulletPrefab != null && firePoint != null)
             {
-                Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+                GameObject bulletInstance = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+                Bullet bulletScript = bulletInstance.GetComponent<Bullet>();
+                
+                if (bulletScript)
+                {
+                    bulletScript.AssignOwnerGameObject(gameObject);
+                }
             }
             shootTimer = shootCooldown;
         }
