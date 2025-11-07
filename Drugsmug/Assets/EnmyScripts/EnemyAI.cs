@@ -17,6 +17,10 @@ public class EnemyAI : MonoBehaviour, IHealth
     public float shootRange = 2.5f;
     public float moveSpeed = 2f;
 
+    // Score value to add to score
+    [Header("Scoring")]
+    public int scoreValue = 10;
+
     [Header("Shooting")]
     public GameObject bulletPrefab;
     public Transform firePoint;
@@ -130,6 +134,11 @@ public class EnemyAI : MonoBehaviour, IHealth
         isDead = true;
         currentState = EnemyState.Dead;
         Debug.Log("Enemy has died!");
+
+        // Awarding points
+        if (GameManager.Instance != null)
+            GameManager.Instance.AddScore(scoreValue);
+
         Destroy(gameObject, 1f);
     }
 

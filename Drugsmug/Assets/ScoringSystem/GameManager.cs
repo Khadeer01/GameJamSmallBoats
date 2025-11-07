@@ -27,19 +27,21 @@ public class GameManager : MonoBehaviour
         currentScore += amount;
         Debug.Log($"Score added: {amount}, Total Score: {currentScore}");
 
-        // implement this when we have a score ui
-        // ScoreUI scoreUI = FindFirstObjectByType<ScoreUI>();
-        // if (scoreUI != null) {
-            // scoreUI.UpdateScoreText(currentScore);
+        ScoreUI scoreUI = FindFirstObjectByType<ScoreUI>();
+
+        if (scoreUI != null)
+        {
+            scoreUI.UpdateScoreText(currentScore);
+        }
     }
 
-    // public void ResetScore()
-    // {
-        // currentScore = 0;
-        // ScoreUI scoreUI = FindFirstObjectByType<ScoreUI>();
-        // if (scoreUI != null)
-        // {
-            // scoreUI.UpdateScoreText(currentScore);
-        // }
-    // }
+     public void ResetScore()
+    {
+        currentScore = 0;
+        ScoreUI scoreUI = FindFirstObjectByType<ScoreUI>();
+        if (scoreUI != null)
+        {
+            scoreUI.UpdateScoreText(currentScore);
+        }
+    }
 }
