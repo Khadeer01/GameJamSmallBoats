@@ -1102,7 +1102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneMusics:
   - sceneName: MainMenu
-    background: {fileID: 0}
+    background: {fileID: 8300000, guid: 7e35e107881a27d49a8a6f93cc6e2ed5, type: 3}
   - sceneName: Level01
     background: {fileID: 8300000, guid: 7e35e107881a27d49a8a6f93cc6e2ed5, type: 3}
   fadeDuration: 1.5
