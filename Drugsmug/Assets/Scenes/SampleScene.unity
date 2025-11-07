@@ -729,8 +729,6 @@ MonoBehaviour:
   backgrounds:
   - {fileID: 938090922}
   - {fileID: 1629696617}
-  background01: {fileID: 938090922}
-  background02: {fileID: 1629696617}
 --- !u!1 &1629696615
 GameObject:
   m_ObjectHideFlags: 0
