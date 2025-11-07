@@ -1,8 +1,10 @@
 using System;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class EnemyAI : MonoBehaviour, IHealth
 {
+
     public enum EnemyState
     {
         Idle,
@@ -13,8 +15,8 @@ public class EnemyAI : MonoBehaviour, IHealth
 
     [Header("Settings")]
     public EnemyState currentState = EnemyState.Idle;
-    public float chaseRange = 5f;
-    public float shootRange = 2.5f;
+    public float chaseRange = 10f;
+    public float shootRange = 5.0f;
     public float moveSpeed = 2f;
 
     // Score value to add to score
@@ -56,15 +58,15 @@ public class EnemyAI : MonoBehaviour, IHealth
             currentState = EnemyState.Shoot;
         else if (distanceToPlayer <= chaseRange)
             currentState = EnemyState.Chase;
-        else
-            currentState = EnemyState.Idle;
+        //else
+        //    currentState = EnemyState.Idle;
 
         // Execute state behavior
         switch (currentState)
         {
-            case EnemyState.Idle:
-                Idle();
-                break;
+            //case EnemyState.Idle:
+            //    Idle();
+            //    break;
             case EnemyState.Chase:
                 ChasePlayer();
                 break;
@@ -84,10 +86,18 @@ public class EnemyAI : MonoBehaviour, IHealth
         FacePlayer();
         Vector2 direction = (player.position - transform.position).normalized;
         transform.position += (Vector3)direction * moveSpeed * Time.deltaTime;
+
+        // If the object is falling, delete the falling script and make the enemy ai chase the player till the end
+        FallingObject fallingObject = GetComponent<FallingObject>();
+        if (fallingObject != null)
+        {
+            Destroy(fallingObject);
+        }
     }
 
     void ShootPlayer()
     {
+        ChasePlayer();
         FacePlayer();
         shootTimer -= Time.deltaTime;
 
@@ -109,9 +119,11 @@ public class EnemyAI : MonoBehaviour, IHealth
 
     void FacePlayer()
     {
-        Vector2 direction = (player.position - transform.position).normalized;
+        if (player == null) return;
+
+        Vector2 direction = player.transform.position - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+        transform.rotation = Quaternion.Euler(0, 0, angle - 90.0f);
     }
 
     public void TakeDamage(float amount)
@@ -145,5 +157,11 @@ public class EnemyAI : MonoBehaviour, IHealth
     public bool IsDead()
     {
         return isDead;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, chaseRange);
     }
 }
