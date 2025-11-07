@@ -19,7 +19,7 @@ public class EnemyAI : MonoBehaviour, IHealth
 
     // Score value to add to score
     [Header("Scoring")]
-    public int scoreValue = 10;
+    public int scoreValue = 100;
 
     [Header("Shooting")]
     public GameObject bulletPrefab;
