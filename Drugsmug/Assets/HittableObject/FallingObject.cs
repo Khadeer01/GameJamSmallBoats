@@ -2,7 +2,11 @@ using UnityEngine;
 
 public class FallingObject : MonoBehaviour
 {
-    [SerializeField] private float fallspeed = (1f);
+    [SerializeField] float fallspeed = (1f);
+
+    private void Start()
+    {
+    }
 
     private void Update()
     {

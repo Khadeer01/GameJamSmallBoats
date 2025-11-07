@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 293684564621650638}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.84, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.92, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 5142731258219586080}
   - component: {fileID: 8862626206882269333}
   - component: {fileID: -3802364326999981813}
+  - component: {fileID: 583854960917964684}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -135,13 +136,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
-  chaseRange: 5
-  shootRange: 3
+  chaseRange: 4
+  shootRange: 4
   moveSpeed: 2
   bulletPrefab: {fileID: 4992389029385569457, guid: dd60512339226244790b55779d80dd44, type: 3}
   firePoint: {fileID: 4522477609597053825}
   shootCooldown: 1
-  maxHealth: 50
+  maxHealth: 30
 --- !u!50 &8862626206882269333
 Rigidbody2D:
   serializedVersion: 5
@@ -179,7 +180,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: d3c02f7a11928a747899871c6290e16f, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -199,7 +200,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -215,3 +216,16 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.8347747, y: 3.4218674}
   m_EdgeRadius: 0
+--- !u!114 &583854960917964684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5457266221886562137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bdd8774f667ef04d8f9fdea72018d25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallspeed: 2
